@@ -50,7 +50,7 @@
 					</div>
 
 					<label for="extra">
-						<span>Extra phone number (if needed)</span>
+						<span>Extra phone number (only if needed)</span>
 						</br/>
 						<span>Please use the following format: [Initial]: +31 (0)6 123 456 78</span>
 					</label>
@@ -110,7 +110,7 @@
 								<a :href="'tel:' + mobileStripped" style="color:rgb(20,86,192);">{{ mobilePrefix }} {{ mobile }}</a>
 							</div>
 							<div v-if="extra">
-								<span style="display:inline-block;font-size: small;font-family:sans-serif;">{{ extraInitial }}:</span>
+								<span style="display:inline-block;font-size: small;font-family:sans-serif;">{{ extraInitial.toUpperCase() }}:</span>
 								<a :href="'tel:' + extraStripped" style="color:rgb(20,86,192);">{{ extraPrefix }} {{ extra }}</a>
 							</div>
 							<div v-if="linkedin">

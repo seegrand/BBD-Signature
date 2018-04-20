@@ -3,15 +3,15 @@ new ClipboardJS('#clipboard');
 var app = new Vue({
     el: '#app',
     data: {
-        name: 'Sander Grandia',
-        role: 'Intern',
-        email: 'sandergrandia',
+        name: '',
+        role: '',
+        email: '',
         phone: '+31 (0)76 204 30 46',
-        mobile: '502 376 95',
-        extra: '123 455 68',
-        extraInitial: 'S',
-        linkedin: 'https://www.linkedin.com/in/sandergrandia/',
-        image: 'https://www.bluebirdday.nl/uploads/media/5acf139471926/sander.png',
+        mobile: '',
+        extra: '',
+        extraInitial: '',
+        linkedin: '',
+        image: '',
 
         emailDomain: '@bluebirdday.nl',
         mobilePrefix: '+31 (0)6 ',
@@ -75,11 +75,11 @@ var app = new Vue({
 
 $.get("https://raw.githubusercontent.com/seegrand/BBD-Signature/master/footer.html", function (data) {
     $(".footer").html(data);
+
+    updatePlainHTML();
 });
 
 function updatePlainHTML() {
-    var signatureHTML = document.querySelector("#signature-wrapper").innerHTML;
+    var signatureHTML = $("#signature-wrapper > table")[0].outerHTML;
     document.querySelector("textarea").value = signatureHTML;
 }
-
-updatePlainHTML();
