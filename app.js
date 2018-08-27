@@ -73,7 +73,7 @@ var app = new Vue({
     }
 });
 
-$.get("https://raw.githubusercontent.com/seegrand/BBD-Signature/master/footer.html", function (data) {
+$.get("https://gist.githubusercontent.com/seegrand/11b476f482cad9f34aff41dbf131432b/raw/610d28992d358874e824cd39c277178fc72be3db/footer.html", function (data) {
     $(".footer").html(data);
 
     updatePlainHTML();
