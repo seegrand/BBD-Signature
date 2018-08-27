@@ -10,6 +10,7 @@
 	<link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon/favicon-32x32.png">
 	<link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon/favicon-16x16.png">
 	<link rel="stylesheet" type="text/css" media="screen" href="./assets/style/normalize.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="./assets/lib/siimple/siimple.css">
 	<link rel="stylesheet" type="text/css" media="screen" href="./assets/style/style.css" />
 	<script src="./assets/lib/jquery/jquery-3.3.1.min.js"></script>
 	<script src="./assets/lib/vue/vue.js"></script>
@@ -19,169 +20,191 @@
 
 <body>
 	<div id="app">
-		<div id="header">
-			<div class="center">
-				<h1>Signature Generator</h1>
-				<img class="header-img" src="./assets/img/bluebird-day.png" />
-				<h4>Fill in your detail and add a profile picture to generate your signature.</h4>
+		<div class="siimple-navbar siimple-navbar--extra-large siimple-navbar--blue">
+			<div class="siimple-navbar-title">Signature Generator</div>
+			<a class="siimple-navbar-subtitle">Bluebird Day</a>
+		</div>
+
+		<div class="siimple-jumbotron siimple-jumbotron--extra-large siimple-jumbotron--light">
+			<div class="siimple-jumbotron-title">Welcome!</div>
+			<div class="siimple-jumbotron-detail">
+				Fill in your detail and add a profile picture to generate your signature.
 			</div>
 		</div>
 
-		<div id="editor">
-			<div class="form">
-				<h1>Your details</h1>
-				<form>
-					<input v-model="name" type="text" placeholder="Name">
-					<input v-model="role" type="text" placeholder="Role">
-					<div id="email">
-						<input v-model="email" class="email" type="email" placeholder="E-mail">
-						<input v-model="emailDomain" class="email-domain" type="email" placeholder="E-mail">
+		<div class="siimple-content siimple-content--extra-large">
+
+			<div class="siimple-grid">
+
+				<div class="siimple-grid-row">
+					<div id="editor" class="siimple-grid-col siimple-grid-col--4 siimple-grid-col--lg-12">
+						<div class="form">
+							<h1>Your details</h1>
+							<form>
+								<input v-model="name" type="text" placeholder="Name">
+								<input v-model="role" type="text" placeholder="Role">
+								<div id="email">
+									<input v-model="email" class="email" type="email" placeholder="E-mail">
+									<input v-model="emailDomain" class="email-domain" type="email" placeholder="E-mail">
+								</div>
+
+								<label for="phone">Please use the following format: +31 (0)76 123 45 67</label>
+								<div id="phone">
+									<input v-model="phone" class="phone" type="tel" pattern="[0-9]+" placeholder="Phone">
+								</div>
+
+								<label for="mobile">Please use the following format: +31 (0)6 123 456 78</label>
+								<div id="mobile">
+									<input v-model="mobilePrefix" class="mobile-prefix" type="tel" pattern="[0-9]+" placeholder="Prefix">
+									<input v-model="mobile" class="mobile" type="tel" pattern="[0-9]+" placeholder="Mobile">
+								</div>
+
+								<label for="extra">
+									<span>Extra phone number (only if needed)</span>
+									<br/>
+									<span>Please use the following format: [Initial]: +31 (0)6 123 456 78</span>
+								</label>
+								<label for="extra"></label>
+								<div id="extra">
+									<input v-model="extraInitial" class="extra-initial" type="tel" pattern="[0-9]+" placeholder="Intital">
+									<input v-model="extraPrefix" class="extra-prefix" type="tel" pattern="[0-9]+" placeholder="Prefix">
+									<input v-model="extra" class="extra" type="tel" pattern="[0-9]+" placeholder="Extra phone number">
+								</div>
+
+								<input v-model="linkedin" type="url" placeholder="LinkedIn URL">
+								<label for="image">Get your profile picture URL from the
+									<a href="https://www.bluebirdday.nl/over-ons" target="_blank">About us</a> page</label>
+								<input v-model="image" id="image" type="url" placeholder="URL to profile picture">
+
+							</form>
+						</div>
 					</div>
 
-					<label for="phone">Please use the following format: +31 (0)76 123 45 67</label>
-					<div id="phone">
-						<input v-model="phone" class="phone" type="tel" pattern="[0-9]+" placeholder="Phone">
+					<div class="siimple-grid-col siimple-grid-col--8 siimple-grid-col--lg-12 siimple-card">
+						<div class="siimple-card-header">Signature</div>
+						<div id="signature-wrapper" class="siimple-card-body">
+							<table border="0" width="650" cellpadding="0" cellspacing="0" bgcolor="ffffff" style="font-size: small;font-family:sans-serif;border:0px;color:rgb(0,0,0);max-width:650px;">
+								<tbody>
+									<tr>
+										<td colspan="7" align="left" style="line-height:23px;font-size: small;font-family:sans-serif;">
+											<div style="margin-bottom:30px;">Met vriendelijke groet / Kind regards,</div>
+										</td>
+									</tr>
+									<tr>
+										<td colspan="2" width="35%" align="bottom" style="vertical-align:bottom;line-height:25%">
+											<img :src="image == '' ? 'https://www.bluebirdday.nl/uploads/media/5ac4c82aafb0e/no-image.png' : image" width="100%" height="auto"
+											    border="0" alt="Profile image" style="display:block;min-width:160px;max-width:250px">
+										</td>
+										<td style="font-size:20px;line-height:20px">&nbsp;</td>
+										<td colspan="5" align="left" style="line-height:22px">
+											<div style="font-weight: bold;font-size:10pt;font-size: small;font-family:sans-serif;">{{ name ? name : '[Name]' }}</div>
+											<div style="line-height:18px;font-size: small;font-family:sans-serif;">{{ role ? role : '[Role]' }}</div>
+											<div style="margin-top:15px;">
+												<a :href="'mailto:' + email + emailDomain" style="color:rgb(20,86,192);font-size: small;font-family:sans-serif;" target="_blank">{{ email ? email + emailDomain : '[e-mail]' }}</a>
+											</div>
+											<div>
+												<span style="display:inline-block;font-size: small;font-family:sans-serif;">T:</span>
+												<a :href="'tel:' + phoneStripped" style="color:rgb(20,86,192);">{{ phone }}</a>
+											</div>
+											<div v-if="mobile">
+												<span style="display:inline-block;font-size: small;font-family:sans-serif;">M:</span>
+												<a :href="'tel:' + mobileStripped" style="color:rgb(20,86,192);">{{ mobilePrefix }} {{ mobile }}</a>
+											</div>
+											<div v-if="extra">
+												<span style="display:inline-block;font-size: small;font-family:sans-serif;">{{ extraInitial.toUpperCase() }}:</span>
+												<a :href="'tel:' + extraStripped" style="color:rgb(20,86,192);">{{ extraPrefix }} {{ extra }}</a>
+											</div>
+											<div v-if="linkedin">
+												<a :href="linkedin" target="_blank">
+													<span style="display:inline-block;height:21px;margin-rigth:5px;font-size: small;font-family:sans-serif;">
+														<img :src="linkedinLogo" align="center" width="30" height="21" style="height:21px;max-width:30px;" />
+													</span>
+												</a>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td colspan="7">
+											<hr style="border: 0;
+											height: 1px;
+											background: #d5d5d5;
+											margin: 0;" />
+										</td>
+									</tr>
+									<tr height="30"></tr>
+									<tr>
+										<td colspan="2" align="left">
+											<img :src="logo" width="290" height="60" border="0" alt="Bluebird Day logo">
+										</td>
+										<td width="50" style="font-size:20px;line-height:20px">&nbsp;</td>
+										<td>
+											<div style="font-size: small;font-family:sans-serif;white-space:nowrap;">
+												<span>Reduitlaan 29</span>
+											</div>
+											<div style="line-height: 24px;font-size: small;font-family:sans-serif;white-space:nowrap;">
+												<span>4814DC Breda</span>
+											</div>
+											<div style="font-size: small;font-family:sans-serif;">
+												<a href="https://www.google.nl/maps/dir//Reduitlaan+29+4814DC/@51.5865463,4.747298,14z" style="color:rgb(20,86,192);" target="_blank"
+												    data-saferedirecturl="https://www.google.com/url?hl=nl&amp;q=https://www.google.nl/maps/dir//Reduitlaan%2B29%2B4814DC/@51.5865463,4.747298,14z&amp;source=gmail&amp;ust=1523040345455000&amp;usg=AFQjCNG5gs-dYaAhSUd2hPRZqBA9IKf3oQ">Route</a>
+											</div>
+										</td>
+										<td width="20">
+											<div style="font-weight: bold;width: 20px">W</div>
+											<div style="line-height: 24px;font-weight: bold;width: 20px">T</div>
+											<div style="font-weight: bold;font-size: small;font-family:sans-serif;width: 20px">E</div>
+										</td>
+										<td colspan="3">
+											<div style="font-size: small;font-family:sans-serif;">
+												<a :href="'https://' + website" style="color:rgb(20,86,192);white-space: nowrap;" target="_blank">{{ website }}</a>
+											</div>
+											<div style="line-height: 24px;font-size: small;font-family:sans-serif;white-space: nowrap;">
+												<a :href="'tel:' + phoneStripped" style="color:rgb(20,86,192);">{{ phone }}</a>
+											</div>
+											<a href="mailto:info@bluebirdday.nl" style="color:rgb(20,86,192);font-size: small;font-family:sans-serif;white-space: nowrap">info@bluebirdday.nl</a>
+										</td>
+									</tr>
+									<tr height="30">&nbsp;</tr>
+									<tr>
+										<td colspan="7">
+											<hr style="border: 0;
+											height: 1px;
+											background: #d5d5d5;
+											margin: 0;" />
+										</td>
+									</tr>
+									<tr height="15">&nbsp;</tr>
+									<tr class="footer"></tr>
+								</tbody>
+							</table>
+							<div class="siimple-content">
+								<button id="clipboard" class="btn" data-clipboard-target="#signature-wrapper > table" style="display: block;margin: 0 auto;">
+									Copy to clipboard
+								</button>
+							</div>
+						</div>
 					</div>
+				</div>
 
-					<label for="mobile">Please use the following format: +31 (0)6 123 456 78</label>
-					<div id="mobile">
-						<input v-model="mobilePrefix" class="mobile-prefix" type="tel" pattern="[0-9]+" placeholder="Prefix">
-						<input v-model="mobile" class="mobile" type="tel" pattern="[0-9]+" placeholder="Mobile">
+				<div class="siimple-grid-row">
+					<div class="siimple-grid-col siimple-grid-col--12">
+						<div class="siimple-card">
+							<div class="siimple-card-header">Plain HTML</div>
+							<div id="signature-plain" class="siimple-card-body siimple-content">
+								<textarea class="siimple-textarea" rows="25" style="width: 94%"></textarea>
+							</div>
+						</div>
 					</div>
+				</div>
 
-					<label for="extra">
-						<span>Extra phone number (only if needed)</span>
-						</br/>
-						<span>Please use the following format: [Initial]: +31 (0)6 123 456 78</span>
-					</label>
-					<label for="extra"></label>
-					<div id="extra">
-						<input v-model="extraInitial" class="extra-initial" type="tel" pattern="[0-9]+" placeholder="Intital">
-						<input v-model="extraPrefix" class="extra-prefix" type="tel" pattern="[0-9]+" placeholder="Prefix">
-						<input v-model="extra" class="extra" type="tel" pattern="[0-9]+" placeholder="Extra phone number">
-					</div>
-
-					<input v-model="linkedin" type="url" placeholder="LinkedIn URL">
-					<label for="image">Get your profile picture URL from the
-						<a href="https://www.bluebirdday.nl/over-ons" target="_blank">About us</a> page</label>
-					<input v-model="image" id="image" type="url" placeholder="URL to profile picture">
-
-				</form>
 			</div>
 		</div>
+	</div>
 
-		<hr class="divider" />
-
-		<div class="center">
-			<h2>Bluebird Day Signature</h2>
-			<div class="padding">
-				<button id="clipboard" class="btn" data-clipboard-target="#signature-wrapper">
-					Copy to clipboard
-				</button>
-			</div>
-		</div>
-
-		<div id="signature-wrapper">
-			<table border="0" width="650" cellpadding="0" cellspacing="0" bgcolor="ffffff" style="font-size: small;font-family:sans-serif;border:0px;color:rgb(0,0,0);max-width:650px;">
-				<tbody>
-					<tr>
-						<td colspan="7" align="left" style="line-height:23px;font-size: small;font-family:sans-serif;">
-							<div style="margin-bottom:30px;">Met vriendelijke groet / Kind regards,</div>
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2" width="40%" align="bottom" style="vertical-align:bottom;line-height:25%">
-							<img :src="image == '' ? 'https://www.bluebirdday.nl/uploads/media/5ac4c82aafb0e/no-image.png' : image" width="100%" height="auto"
-							    border="0" alt="Profile image" style="display:block;min-width:160px;max-width:250px">
-						</td>
-						<td style="font-size:20px;line-height:20px">&nbsp;</td>
-						<td colspan="5" align="left" style="line-height:22px">
-							<div style="font-weight: bold;font-size:10pt;font-size: small;font-family:sans-serif;">{{ name ? name : '[Name]' }}</div>
-							<div style="line-height:18px;font-size: small;font-family:sans-serif;">{{ role ? role : '[Role]' }}</div>
-							<div style="margin-top:15px;">
-								<a :href="'mailto:' + email + emailDomain" style="color:rgb(20,86,192);font-size: small;font-family:sans-serif;" target="_blank">{{ email ? email + emailDomain : '[e-mail]' }}</a>
-							</div>
-							<div>
-								<span style="display:inline-block;font-size: small;font-family:sans-serif;">T:</span>
-								<a :href="'tel:' + phoneStripped" style="color:rgb(20,86,192);">{{ phone }}</a>
-							</div>
-							<div v-if="mobile">
-								<span style="display:inline-block;font-size: small;font-family:sans-serif;">M:</span>
-								<a :href="'tel:' + mobileStripped" style="color:rgb(20,86,192);">{{ mobilePrefix }} {{ mobile }}</a>
-							</div>
-							<div v-if="extra">
-								<span style="display:inline-block;font-size: small;font-family:sans-serif;">{{ extraInitial.toUpperCase() }}:</span>
-								<a :href="'tel:' + extraStripped" style="color:rgb(20,86,192);">{{ extraPrefix }} {{ extra }}</a>
-							</div>
-							<div v-if="linkedin">
-								<a :href="linkedin" style="color:rgb(20,86,192);" target="_blank">
-									<span style="display:inline-block;height:20px;margin-rigth:5px;font-size: small;font-family:sans-serif;">
-										<img :src="linkedinLogo" align="center" style="height:21px;max-width:30px;" />
-									</span>
-								</a>
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td colspan="7">
-							<hr style="border: 0;
-                                height: 1px;
-                                background: #d5d5d5;
-                                margin: 0;" />
-						</td>
-					</tr>
-					<tr height="30"></tr>
-					<tr>
-						<td colspan="2" align="left">
-							<img :src="logo" width="100%" height="auto" border="0" alt="Bluebird Day logo">
-						</td>
-						<td width="50" style="font-size:20px;line-height:20px">&nbsp;</td>
-						<td>
-							<div style="font-size: small;font-family:sans-serif;white-space:nowrap;">
-								<span>Reduitlaan 29</span>
-							</div>
-							<div style="line-height: 24px;font-size: small;font-family:sans-serif;white-space:nowrap;">
-								<span>4814DC Breda</span>
-							</div>
-							<div style="font-size: small;font-family:sans-serif;">
-								<a href="https://www.google.nl/maps/dir//Reduitlaan+29+4814DC/@51.5865463,4.747298,14z" style="color:rgb(20,86,192);" target="_blank"
-								    data-saferedirecturl="https://www.google.com/url?hl=nl&amp;q=https://www.google.nl/maps/dir//Reduitlaan%2B29%2B4814DC/@51.5865463,4.747298,14z&amp;source=gmail&amp;ust=1523040345455000&amp;usg=AFQjCNG5gs-dYaAhSUd2hPRZqBA9IKf3oQ">Route</a>
-							</div>
-						</td>
-						<td width="20">
-							<div style="font-weight: bold;width: 20px">W</div>
-							<div style="line-height: 24px;font-weight: bold;width: 20px">T</div>
-							<div style="font-weight: bold;font-size: small;font-family:sans-serif;width: 20px">E</div>
-						</td>
-						<td colspan="3">
-							<div style="font-size: small;font-family:sans-serif;">
-								<a :href="'https://' + website" style="color:rgb(20,86,192);white-space: nowrap;" target="_blank">{{ website }}</a>
-							</div>
-							<div style="line-height: 24px;font-size: small;font-family:sans-serif;white-space: nowrap;">
-								<a :href="'tel:' + phoneStripped" style="color:rgb(20,86,192);">{{ phone }}</a>
-							</div>
-							<a href="mailto:info@bluebirdday.nl" style="color:rgb(20,86,192);font-size: small;font-family:sans-serif;white-space: nowrap">info@bluebirdday.nl</a>
-						</td>
-					</tr>
-					<tr height="30">&nbsp;</tr>
-					<tr>
-						<td colspan="7">
-							<hr style="border: 0;
-                                height: 1px;
-                                background: #d5d5d5;
-                                margin: 0;" />
-						</td>
-					</tr>
-					<tr height="15">&nbsp;</tr>
-					<tr class="footer"></tr>
-				</tbody>
-			</table>
-		</div>
-
-		<div id="signature-plain" class="center">
-			<h2>Plain HTML</h2>
-			<textarea cols="100" rows="25"></textarea>
-		</div>
+	<div class="siimple-footer siimple-footer--extra-large siimple-footer--dark">
+		© 2018
+		<strong>Bluebird Day</strong>
+	</div>
 	</div>
 </body>
 
